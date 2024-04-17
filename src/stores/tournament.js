@@ -5,7 +5,7 @@ import config from '@/config';
 export const useTournamentStore = defineStore('tournament', {
   state: () => ({
     tournamentName: localStorage.getItem('tournamentName') || '', // Load from localStorage or default to ''
-    tournaments: null,
+    tournaments: [],
     topThree: null,
     gruppData: null,  // Changed to null for initial state to represent no data
     gruppMatches: null,
@@ -15,28 +15,6 @@ export const useTournamentStore = defineStore('tournament', {
     setTournamentName(name) {
       this.tournamentName = name;
       localStorage.setItem('tournamentName', name); // Save to localStorage
-    },
-    async getTournaments() {
-    this.tournaments = ''
-    const url = `${config.DOMAIN_NAME}/tournament/list/`;
-    const options = {
-      headers: {
-        'Accept': 'application/json'
-      }
-    }
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      console.log("Data fetched:", data);
-      this.tournaments = data;  // Assuming data is the whole object you want to display
-      return true
-    }
-    catch (error) {
-      console.error(error);
-    }
     },
     async getGrupp() {
       this.gruppData = ''

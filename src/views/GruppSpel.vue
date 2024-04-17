@@ -70,19 +70,21 @@
 <!-- Matches Data Display -->
 <div v-if="sortedMatches && sortedMatches.length" class="mt-4 mb-8 bg-background rounded-sm">
     <Table>
-        <TableCaption class="mb-4">Scheduled Matches</TableCaption>
+        <TableCaption class="mb-4">Grupp Matcher</TableCaption>
         <TableHeader>
             <TableRow>
                 <TableHead>Match</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>Poäng</TableHead>
                 <TableHead>Status</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
-            <TableRow v-for="match in sortedMatches" :key="match.id" :class="{ 'done': match.is_completed }">
-                <TableCell>{{ match.team1_name }} vs {{ match.team2_name }}</TableCell>
-                <TableCell>{{ match.match_date }}</TableCell>
-                <TableCell>{{ match.is_completed ? 'Completed' : 'Ongoing' }}</TableCell>
+            <TableRow v-for="match in sortedMatches" :key="match.id" :class="{ 'done': match.is_completed, 'active': match.active }">
+                <TableCell class="text-xs">{{ match.team1_name }} vs {{ match.team2_name }}</TableCell>
+                <TableCell class="text-xs">{{ match.team1_points || '0' }}/{{ match.team2_points || '0' }}</TableCell>
+                <TableCell class="text-xs">
+                    {{ match.is_completed ? 'Completed' : match.active ? 'Active' : 'Ongoing' }}
+                </TableCell>
             </TableRow>
         </TableBody>
     </Table>
@@ -117,15 +119,26 @@ const filteredTeams = computed(() => {
 });
 
 const sortedMatches = computed(() => {
+    console.log('store.gruppMatches.groups_matches:', store.gruppMatches.groups_matches);
     return store.gruppMatches.groups_matches.sort((a, b) => {
-        return a.is_completed - b.is_completed; // Sort by completion status, ongoing first
+        if (a.active && !b.active) return -1; // Active matches come first
+        if (!a.active && b.active) return 1;
+        if (!a.is_completed && b.is_completed) return -1; // Not played matches come second
+        if (a.is_completed && !b.is_completed) return 1;
+        return 0; // No change for matches with the same status
     });
 });
+
 
 onMounted(async () => {
     const response = await store.getGrupp();
     isLoading.value = false;
     if (response == false) {
+        errorMessage.value = 'Invalid tournament name. Redirecting...';
+        setTimeout(() => router.push('/'), 100);
+    }
+
+    if (response == null) {
         errorMessage.value = 'Invalid tournament name. Redirecting...';
         setTimeout(() => router.push('/'), 100);
     }
@@ -144,6 +157,11 @@ function formatGroupName(name) {
 
 <style scoped>
 .done {
+    background-color: hsl(220, 19%, 38%);
+    color: hsl( 0 10% 88%);
+}
+
+.active {
     background-color: hsl(220, 19%, 38%);
     color: hsl( 0 10% 88%);
 }

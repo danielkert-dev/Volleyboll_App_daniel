@@ -1,7 +1,7 @@
 <template>
     
-    <div class="title-container mt-10 md:my-10 lg:my-20 bg-primary w-max mx-auto py-2 px-8 md:py-4 md:px-8 lg:py-6 lg:px-12">
-    <h1 class="text-center text-2xl md:text-4xl lg:text-6xl uppercase text-background">Volleyboll Turnering</h1>
+    <div class="title-container mt-10 md:my-10 lg:my-10 bg-primary w-max mx-auto py-2 px-8 md:py-4 md:px-8 lg:py-6 lg:px-12">
+    <h1 class="text-center text-2xl md:text-4xl lg:text-4xl uppercase text-background">Volleyboll Turnering</h1>
     </div>
 
     <div class="bg-background input-container xl:w-1/4 px-3 pt-1 pb-5 mt-5 rounded-md w-fit mx-auto">
@@ -27,34 +27,65 @@
     </div>
 </div>
 
-<p>{{ store.tournaments }}</p>
+<div>
+    <div v-if="store.tournaments" class="tournaments-list">
+      <ul class="mb-10 xl:w-1/4 mx-auto">
+        <li v-for="tournament in store.tournaments" :key="tournament.id" class="bg-background rounded-sm my-5 mx-5 lg:mx-0 p-3 cursor-pointer"
+      @click="selectTournament(tournament.tournament)">
+              <p class="capitalize">{{ tournament.tournament }}</p>
+        <p class="text-xs">{{ tournament.description || 'Ingen beskrivning' }}</p>
+        </li>
+      </ul>
+    </div>
+    
+    <p></p>
+  </div>
 
 </template>
 
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
+import config from '@/config';
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
-
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useTournamentStore } from '@/stores/tournament';
 
 
 const store = useTournamentStore();
 const tournamentName = ref(store.tournamentName);
+const activeTournament = ref(''); // Track active tournament
+const currentPage = ref(1);
+const limit = ref(10);
 
-onMounted(async () => {
-    const response = await store.getTournaments();
-    if (response == false) {
-        store.tournaments = 'No tournaments';
+async function getTournaments() {
+    const url = `${config.DOMAIN_NAME}/tournament/list/?page=${currentPage.value}&limit=${limit.value}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
+        const data = await response.json();
+        store.tournaments = data.tournaments
+    } catch (error) {
+        console.error('Error fetching tournaments:', error);
+        store.tournaments = [];
     }
-    
+};
+
+onMounted( async () => {
+    await getTournaments();
 });
 
 watch(tournamentName, (newName) => {
     store.topThree = null;
     store.setTournamentName(newName);
 });
+
+const selectTournament = (name) => {
+  tournamentName.value = name; // Update the input field
+  activeTournament.value = name; // Set active tournament for highlighting
+};
+
 
 const isButtonActive = computed(() => tournamentName.value.trim().length > 0);
 
@@ -67,14 +98,19 @@ const isButtonActive = computed(() => tournamentName.value.trim().length > 0);
     border-radius: 5rem;
 }
 
-.input-container {
-}
-
-
 .disabled-button {
     background-color: #ccc; /* Gray out the button */
     cursor: not-allowed;
     
+}
+
+li:hover, li.active {
+  background-color: #f0f0f0; /* Lighter background on hover */
+}
+
+/* Transition for smooth color change */
+li {
+  transition: background-color 0.3s ease;
 }
 
 </style>

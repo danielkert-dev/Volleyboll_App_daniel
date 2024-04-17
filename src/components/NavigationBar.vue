@@ -51,8 +51,8 @@ watch(store.topThree, (newValue) => {
       
       <RouterLink to="/" class="w-full flex justify-start overflow-hidden" @click="isOpen = false">
         <img class="h-6 m-2" src="@/assets/img/logo.png"/>
-        <span class="text-white text-md my-auto capitalize">{{ store.tournamentName }}</span>
-        <span v-if="store.gruppData && formattedTopThree" class="text-white text-xs my-auto ml-5 flex" v-html="formattedTopThree"></span>
+        <span class="text-white text-md my-auto capitalize poppins-regular">{{ store.tournamentName }}</span>
+        <span v-if="store.gruppData && formattedTopThree" class="text-white text-xs my-auto ml-2 mt-3 flex poppins-regular" v-html="formattedTopThree"></span>
       </RouterLink>
 
 

@@ -12,6 +12,7 @@
     "@vueuse/core": "^10.9.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "leader-line-vue": "^2.1.1",
     "lucide-vue-next": "^0.368.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.7.0",
@@ -19,7 +20,11 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul-vue": "^0.1.0",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-panzoom": "^1.1.6",
+    "vue-router": "^4.3.0",
+    "vue-tournament": "^1.1.1",
+    "vue-tournament-bracket": "^3.0.0",
+    "vue-zoomable": "^1.1.9"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
