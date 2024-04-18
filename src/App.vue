@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button';
 import NavigationBar from '@/components/NavigationBar.vue';
-import { Badge } from '@/components/ui/badge'
 
 
 import { ref, onMounted, onUnmounted, computed } from 'vue';

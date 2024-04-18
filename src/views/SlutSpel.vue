@@ -21,7 +21,6 @@
               v-for="(game, gameIndex) in stage.games"
               :key="gameIndex"
               class="bg-white p-2 rounded-sm shadow-lg m-1 relative game-box"
-              :ref="setRef"
             >
               <p>{{ game.player1.name || "TBD" }} vs {{ game.player2.name || "TBD" }}</p>
               <p class="text-center" v-if="game.winner">V: {{ game.winner }}</p>

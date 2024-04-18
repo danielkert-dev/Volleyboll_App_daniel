@@ -76,12 +76,12 @@ onMounted( async () => {
     await getTournaments();
 });
 
-watch(tournamentName, (newName) => {
+watch(tournamentName, (newName:any) => {
     store.topThree = null;
     store.setTournamentName(newName);
 });
 
-const selectTournament = (name) => {
+const selectTournament = (name:any) => {
   tournamentName.value = name; // Update the input field
   activeTournament.value = name; // Set active tournament for highlighting
 };

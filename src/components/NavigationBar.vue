@@ -69,13 +69,13 @@ watch(store.topThree, (newValue) => {
           <DialogTitle class="text-center">Menu</DialogTitle>
         </DialogHeader>
         <div class="grid gap-3 p-4">
-        <Button  variant="">
+        <Button  >
           <RouterLink to="/" class="w-full" @click="isOpen = false">Start sida</RouterLink>
         </Button>
-        <Button  variant="">
+        <Button  >
           <RouterLink to="/grupp" class="w-full" @click="isOpen = false">Gruppspel</RouterLink>
         </Button>
-        <Button  variant="">
+        <Button  >
           <RouterLink to="/slut" class="w-full" @click="isOpen = false">Slutspel</RouterLink>
         </Button>
         </div>
@@ -89,13 +89,13 @@ watch(store.topThree, (newValue) => {
           <DrawerTitle>Menu</DrawerTitle>
         </DrawerHeader>
         <div class="grid gap-3 p-4">
-        <Button variant="" >
+        <Button  >
           <RouterLink to="/" class="w-full" @click="isOpen = false">Start sida</RouterLink>
         </Button>
-        <Button variant="">
+        <Button >
           <RouterLink to="/grupp" class="w-full" @click="isOpen = false">Gruppspel</RouterLink>
         </Button>
-        <Button variant="">
+        <Button >
           <RouterLink to="/slut" class="w-full" @click="isOpen = false">Slutspel</RouterLink>
         </Button>
         </div>
